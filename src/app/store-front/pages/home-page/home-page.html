@@ -1,0 +1,66 @@
+<div class="container mx-auto p-4 max-w-7xl">
+    <h2 class="font-montserrat text-3xl font-bold text-base-content mb-1">{{ 'all_products' | transloco }}</h2>
+    <p class="text-base-content/60 text-sm font-medium mb-6 font-montserrat">{{ 'for_all_tastes' | transloco }}</p>
+
+    <!-- Estado de carga -->
+    @if (productsResource.isLoading()) {
+        <div class="flex flex-col items-center justify-center min-h-[300px] gap-4">
+            <span class="loading loading-spinner loading-lg text-primary"></span>
+            <p class="text-sm opacity-70 font-medium">{{ 'loading_catalog' | transloco }}</p>
+        </div>
+    } 
+    
+    <!-- No se encontraron productos -->
+    @else if (productsResource.value()?.products?.length === 0) {
+        <div class="flex flex-col items-center justify-center min-h-[300px] border border-dashed border-base-300 rounded-3xl p-8 text-center bg-base-50/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 opacity-40 mb-3 text-base-content" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+            <p class="text-lg font-semibold font-montserrat opacity-80">{{ 'empty_catalog' | transloco }}</p>
+            <p class="text-sm opacity-60 max-w-sm mt-1">{{ 'no_products_found_store' | transloco }}</p>
+        </div>
+    } 
+    
+    <!-- Cuadrícula de productos y paginación -->
+    @else {
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @for (producto of productsResource.value()?.products; track producto.id) {
+                <app-product [producto]="producto"></app-product>
+            }
+        </div>
+
+        <!-- Paginador Elegante -->
+        @if (totalPages() > 1) {
+            <div class="flex justify-center items-center mt-12 mb-6">
+                <div class="join shadow-sm border border-base-300 bg-base-100 rounded-2xl p-1">
+                    <!-- Botón Anterior -->
+                    <button 
+                        class="join-item btn btn-ghost btn-sm rounded-xl font-bold" 
+                        [disabled]="currentPage() === 1" 
+                        (click)="prevPage()">
+                        ❮
+                    </button>
+                    
+                    <!-- Páginas -->
+                    @for (page of pagesArray(); track page) {
+                        <button 
+                            class="join-item btn btn-sm rounded-xl px-4 transition-all duration-200" 
+                            [class.btn-primary]="currentPage() === page"
+                            [class.btn-ghost]="currentPage() !== page"
+                            (click)="setPage(page)">
+                            {{ page }}
+                        </button>
+                    }
+                    
+                    <!-- Botón Siguiente -->
+                    <button 
+                        class="join-item btn btn-ghost btn-sm rounded-xl font-bold" 
+                        [disabled]="currentPage() === totalPages()" 
+                        (click)="nextPage()">
+                        ❯
+                    </button>
+                </div>
+            </div>
+        }
+    }
+</div>

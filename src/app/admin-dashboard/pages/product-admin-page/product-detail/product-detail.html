@@ -1,0 +1,161 @@
+<div class="mb-6">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">{{ product().title }}</h1>
+      <p class="text-slate-500 text-sm mt-1">{{ 'edit_product_subtitle' | transloco }}</p>
+    </div>
+    <div class="self-start sm:self-auto">
+      <a routerLink="/admin/products"
+        class="btn btn-outline btn-sm rounded-xl text-slate-600 border-slate-300 bg-white hover:bg-slate-50">
+        {{ 'back' | transloco }}
+      </a>
+    </div>
+  </div>
+  <div class="divider my-4"></div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-slate-800">
+    <!-- Datos generales -->
+    <div class="flex flex-col gap-4">
+      <h2 class="text-xl font-bold text-slate-700 pb-2 border-b border-slate-100">{{ 'general_data' | transloco }}</h2>
+
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'title' | transloco }}</label>
+        <input type="text" formControlName="title" [placeholder]="'title' | transloco"
+          class="input input-bordered w-full text-slate-800 bg-white focus:bg-white"
+          [class.input-error]="FormUtils.isValidField(productForm, 'title')" />
+        @let titleError = FormUtils.getFieldError(productForm, 'title');
+        @if (titleError) {
+        <span class="text-xs text-error font-medium px-1">
+          {{ titleError.key | transloco: titleError.params }}
+        </span>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'slug' | transloco }}</label>
+        <input type="text" formControlName="slug" [placeholder]="'slug' | transloco"
+          class="input input-bordered w-full text-slate-800 bg-white focus:bg-white"
+          [class.input-error]="FormUtils.isValidField(productForm, 'slug')" />
+        @let slugError = FormUtils.getFieldError(productForm, 'slug');
+        @if (slugError) {
+        <span class="text-xs text-error font-medium px-1">
+          {{ slugError.key | transloco: slugError.params }}
+        </span>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'description' | transloco }}</label>
+        <textarea formControlName="description"
+          class="textarea textarea-bordered text-slate-800 bg-white focus:bg-white w-full" [placeholder]="'description' | transloco"
+          rows="5"></textarea>
+      </div>
+
+      <h2 class="text-xl font-bold text-slate-700 pt-2 pb-2 border-b border-slate-100">{{ 'sales_data' | transloco }}</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'price' | transloco }}</label>
+          <input type="number" formControlName="price" [placeholder]="'price' | transloco"
+            class="input input-bordered w-full text-slate-800 bg-white focus:bg-white"
+            [class.input-error]="FormUtils.isValidField(productForm, 'price')" />
+          @let priceError = FormUtils.getFieldError(productForm, 'price');
+          @if (priceError) {
+          <span class="text-xs text-error font-medium px-1">
+            {{ priceError.key | transloco: priceError.params }}
+          </span>
+          }
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'inventory' | transloco }}</label>
+          <input type="number" formControlName="stock" [placeholder]="'inventory' | transloco"
+            class="input input-bordered w-full text-slate-800 bg-white focus:bg-white"
+            [class.input-error]="FormUtils.isValidField(productForm, 'stock')" />
+          @let stockError = FormUtils.getFieldError(productForm, 'stock');
+          @if (stockError) {
+          <span class="text-xs text-error font-medium px-1">
+            {{ stockError.key | transloco: stockError.params }}
+          </span>
+          }
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'tags_instruction' | transloco }}</label>
+        <input type="text" formControlName="tags" [placeholder]="'tags' | transloco"
+          class="input input-bordered w-full text-slate-800 bg-white focus:bg-white" />
+      </div>
+
+      <!-- Género -->
+      <div class="flex flex-col gap-2">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'gender' | transloco }}</label>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+          <button type="button" (click)="setGender('men')"
+            [class.btn-primary]="productForm.get('gender')?.value === 'men'"
+            [class.btn-outline]="productForm.get('gender')?.value !== 'men'"
+            class="btn btn-sm rounded-xl font-semibold">
+            {{ 'gender_men' | transloco }}
+          </button>
+          <button type="button" (click)="setGender('women')"
+            [class.btn-primary]="productForm.get('gender')?.value === 'women'"
+            [class.btn-outline]="productForm.get('gender')?.value !== 'women'"
+            class="btn btn-sm rounded-xl font-semibold">
+            {{ 'gender_women' | transloco }}
+          </button>
+          <button type="button" (click)="setGender('kids')"
+            [class.btn-primary]="productForm.get('gender')?.value === 'kids'"
+            [class.btn-outline]="productForm.get('gender')?.value !== 'kids'"
+            class="btn btn-sm rounded-xl font-semibold">
+            {{ 'gender_kids' | transloco }}
+          </button>
+          <button type="button" (click)="setGender('unisex')"
+            [class.btn-primary]="productForm.get('gender')?.value === 'unisex'"
+            [class.btn-outline]="productForm.get('gender')?.value !== 'unisex'"
+            class="btn btn-sm rounded-xl font-semibold">
+            {{ 'gender_unisex' | transloco }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Tallas -->
+      <div class="flex flex-col gap-2">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'available_sizes' | transloco }}</label>
+        <div class="flex flex-wrap gap-2">
+          @for (size of sizes; track size) {
+          <button type="button" (click)="toggleSize(size)" [class.btn-primary]="selectedSizes().has(size)"
+            [class.btn-outline]="!selectedSizes().has(size)" class="btn btn-sm rounded-xl font-bold px-4">
+            {{ size }}
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Imágenes -->
+    <div class="flex flex-col gap-6">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+        <h2 class="text-xl font-bold text-slate-700">{{ 'product_images' | transloco }}</h2>
+        <button type="submit" [disabled]="productForm.invalid"
+          class="btn btn-md px-6 rounded-xl font-bold transition-all duration-200"
+          [class.btn-secondary]="!productForm.invalid" [class.shadow-sm]="!productForm.invalid"
+          [class.bg-slate-200]="productForm.invalid" [class.text-slate-400]="productForm.invalid"
+          [class.border-slate-200]="productForm.invalid" [class.cursor-not-allowed]="productForm.invalid">
+          {{ 'save_changes' | transloco }}
+        </button>
+      </div>
+
+      <div class="p-2 border border-slate-100 rounded-2xl bg-slate-50">
+        <product-carousel [images]="productForm.get('images')?.value || []" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'upload_new_images' | transloco }}</label>
+        <input type="file" multiple accept="image/*"
+          class="file-input file-input-bordered w-full text-slate-800 bg-white focus:bg-white rounded-xl" />
+      </div>
+    </div>
+  </form>
+</div>

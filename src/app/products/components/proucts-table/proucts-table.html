@@ -1,0 +1,110 @@
+<div class="overflow-x-auto bg-white rounded-xl shadow-sm border border-slate-200">
+    <table class="table table-md w-full">
+        <!-- head -->
+        <thead class="bg-slate-50/75 border-b border-slate-200">
+            <tr>
+                <th class="w-12 text-center text-slate-500 font-semibold hidden sm:table-cell">#</th>
+                <th class="text-slate-500 font-semibold">{{ 'product' | transloco }}</th>
+                <th class="text-slate-500 font-semibold hidden sm:table-cell">{{ 'gender' | transloco }}</th>
+                <th class="text-slate-500 font-semibold">{{ 'stock' | transloco }}</th>
+                <th class="text-slate-500 font-semibold">{{ 'price' | transloco }}</th>
+                <th class="w-24"></th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+            @for (product of products(); track product.id; let index = $index) {
+            <tr class="hover:bg-slate-50/50 transition-colors duration-150">
+                <td class="text-center font-medium text-slate-400 hidden sm:table-cell">
+                    {{ index + 1 }}
+                </td>
+                <td>
+                    <div class="flex items-center gap-4">
+                        <div class="avatar">
+                            <div class="mask mask-squircle h-12 w-12 bg-slate-100 border border-slate-200/50">
+                                <img [src]="product.images | productImage" [alt]="product.title" />
+                            </div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-slate-800 text-sm md:text-base">{{ product.title }}</div>
+                            <div class="text-xs text-slate-400 mt-0.5 truncate max-w-[150px] sm:max-w-xs md:max-w-md">{{
+                                product.slug }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="hidden sm:table-cell">
+                    <span class="badge uppercase text-[10px] font-extrabold tracking-wider px-2.5 py-1" [class]="product.gender === 'men' ? 'badge-info bg-blue-50 text-blue-700 border-blue-100' :
+                                       product.gender === 'women' ? 'badge-secondary bg-pink-50 text-pink-700 border-pink-100' :
+                                       product.gender === 'kids' ? 'badge-accent bg-purple-50 text-purple-700 border-purple-100' :
+                                       'badge-ghost bg-slate-50 text-slate-600 border-slate-100'">
+                        {{ product.gender | transloco }}
+                    </span>
+                </td>
+                <td>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-sm font-semibold text-slate-700">{{ product.stock }}</span>
+                        <span class="text-xs text-slate-400">{{ 'units_abbr' | transloco }}</span>
+                        @if (product.stock === 0) {
+                        <span
+                            class="badge badge-error badge-xs bg-red-100 border-red-200 text-red-700 text-[9px] uppercase font-bold px-1.5 ml-1">{{ 'out_of_stock_badge' | transloco }}</span>
+                        } @else if (product.stock <= 5) {
+                        <span
+                            class="badge badge-warning badge-xs bg-amber-100 border-amber-200 text-amber-700 text-[9px] uppercase font-bold px-1.5 ml-1">
+                            {{ 'low_stock_badge' | transloco }}</span>
+                        }
+                    </div>
+                </td>
+                <td>
+                    <span class="font-bold text-slate-800 text-sm">${{ product.price }}</span>
+                </td>
+                <td class="text-center">
+                    <a [routerLink]="['/admin/product', product.id]"
+                        class="btn btn-ghost hover:bg-slate-100 btn-xs text-blue-600 hover:text-blue-800 font-bold transition duration-150">
+                        {{ 'edit' | transloco }}
+                    </a>
+                </td>
+            </tr>
+            } @empty {
+            <tr>
+                <td colspan="6" class="text-center py-12">
+                    <div class="flex flex-col items-center justify-center text-slate-400 space-y-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 13.5h3.86a2.25 2.25 0 012.008 1.24l.885 1.77a2.25 2.25 0 002.007 1.24h1.98a2.25 2.25 0 002.007-1.24l.885-1.77a2.25 2.25 0 012.007-1.24h3.86m-18 0h18" />
+                        </svg>
+                        <span class="text-sm font-medium">{{ 'no_products_found' | transloco }}</span>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Paginador Elegante -->
+@if (totalPages() > 1) {
+<div class="flex justify-center items-center mt-6">
+    <div class="join shadow-sm border border-slate-200 bg-white rounded-2xl p-1">
+        <!-- Botón Anterior -->
+        <button class="join-item btn btn-ghost btn-sm rounded-xl font-bold text-slate-500"
+            [disabled]="currentPage() === 1" (click)="prevPage()">
+            ❮
+        </button>
+
+        <!-- Páginas -->
+        @for (page of pagesArray(); track page) {
+        <button class="join-item btn btn-sm rounded-xl px-4 transition-all duration-200"
+            [class.btn-primary]="currentPage() === page" [class.btn-ghost]="currentPage() !== page"
+            [class.text-slate-500]="currentPage() !== page" (click)="setPage(page)">
+            {{ page }}
+        </button>
+        }
+
+        <!-- Botón Siguiente -->
+        <button class="join-item btn btn-ghost btn-sm rounded-xl font-bold text-slate-500"
+            [disabled]="currentPage() === totalPages()" (click)="nextPage()">
+            ❯
+        </button>
+    </div>
+</div>
+}

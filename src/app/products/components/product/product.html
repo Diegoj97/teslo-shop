@@ -1,0 +1,13 @@
+<div class="card bg-base-100 w-full max-w-sm shadow-sm transition duration-300 hover:shadow-md">
+    <figure class="px-4 pt-4">
+        <img [src]="producto().images | productImage" [alt]="producto().title" class="rounded-xl object-cover h-64 w-full" />
+    </figure>
+    <div class="card-body">
+        <h2 class="card-title font-montserrat">{{ producto().title }}</h2>
+        <p class="text-sm opacity-75 line-clamp-2">{{ producto().description }}</p>
+        <div class="card-actions justify-between items-center mt-4">
+            <span class="text-xl font-bold">${{ producto().price }}</span>
+            <a [routerLink]="['/product', producto().id]" class="btn btn-primary btn-sm">{{ 'view_product' | transloco }}</a>
+        </div>
+    </div>
+</div>

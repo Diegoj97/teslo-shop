@@ -1,0 +1,38 @@
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-6 shadow-sm">
+    <legend class="fieldset-legend font-montserrat text-xl font-bold">Ingresar</legend>
+
+    @if (errorMessage()) {
+        <div class="alert alert-error text-xs py-2 px-3 rounded-lg mt-2">
+            <span>{{ errorMessage() }}</span>
+        </div>
+    }
+
+    <div class="form-control w-full">
+        <label class="label font-medium text-xs opacity-75">Email</label>
+        <input type="email" formControlName="email" class="input w-full" placeholder="ejemplo@google.com" />
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+            <span class="text-error text-xs mt-1">
+                @if (loginForm.get('email')?.errors?.['required']) { El correo es requerido. }
+                @else if (loginForm.get('email')?.errors?.['strictEmail']) { Formato de correo inválido. }
+            </span>
+        }
+    </div>
+
+    <div class="form-control w-full mt-2">
+        <label class="label font-medium text-xs opacity-75">Contraseña</label>
+        <input type="password" formControlName="password" class="input w-full" placeholder="••••••••" />
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            <span class="text-error text-xs mt-1">
+                @if (loginForm.get('password')?.errors?.['required']) { La contraseña es requerida. }
+                @else if (loginForm.get('password')?.errors?.['minlength']) { Debe contener al menos 6 caracteres. }
+            </span>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-neutral mt-6 w-full shadow-md">Ingresar</button>
+
+    <div class="text-center mt-4 text-sm font-medium">
+        <span class="opacity-70">¿Aún no tienes cuenta?</span>
+        <a routerLink="/auth/register" class="link link-primary ml-1">Regístrate</a>
+    </div>
+</form>
