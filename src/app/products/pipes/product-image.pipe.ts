@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 export class ProductImagePipe implements PipeTransform {
   transform(value: string | string[] | undefined): string {
     const fallbackImage = 'https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp';
-    
+
     if (!value) {
       return fallbackImage;
     }
@@ -23,7 +23,7 @@ export class ProductImagePipe implements PipeTransform {
       image = value;
     }
 
-    if (image.startsWith('http')) {
+    if (image.startsWith('http') || image.startsWith('blob:')) {
       return image;
     }
 

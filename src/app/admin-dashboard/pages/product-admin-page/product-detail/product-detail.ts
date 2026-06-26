@@ -14,6 +14,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
   styles: ``,
 })
 export class ProductDetail {
+
   product = input.required<Product>();
   onSave = output<Partial<Product>>();
 
@@ -85,6 +86,16 @@ export class ProductDetail {
 
     console.log('Saved product data:', updatedProduct);
     this.onSave.emit(updatedProduct);
+  }
+
+  onFileSelected($event: Event) {
+    const input = $event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const selectedFiles = Array.from(input.files);
+      const imageUrls = selectedFiles.map(file => URL.createObjectURL(file));
+      const currentImages: string[] = this.productForm.get('images')?.value || [];
+      this.productForm.patchValue({ images: [...currentImages, ...imageUrls] });
+    }
   }
 }
 

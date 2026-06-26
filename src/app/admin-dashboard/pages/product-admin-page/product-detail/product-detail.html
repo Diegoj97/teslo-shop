@@ -49,11 +49,12 @@
       <div class="flex flex-col gap-1.5">
         <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'description' | transloco }}</label>
         <textarea formControlName="description"
-          class="textarea textarea-bordered text-slate-800 bg-white focus:bg-white w-full" [placeholder]="'description' | transloco"
-          rows="5"></textarea>
+          class="textarea textarea-bordered text-slate-800 bg-white focus:bg-white w-full"
+          [placeholder]="'description' | transloco" rows="5"></textarea>
       </div>
 
-      <h2 class="text-xl font-bold text-slate-700 pt-2 pb-2 border-b border-slate-100">{{ 'sales_data' | transloco }}</h2>
+      <h2 class="text-xl font-bold text-slate-700 pt-2 pb-2 border-b border-slate-100">{{ 'sales_data' | transloco }}
+      </h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="flex flex-col gap-1.5">
@@ -84,7 +85,8 @@
       </div>
 
       <div class="flex flex-col gap-1.5">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'tags_instruction' | transloco }}</label>
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'tags_instruction' | transloco
+          }}</label>
         <input type="text" formControlName="tags" [placeholder]="'tags' | transloco"
           class="input input-bordered w-full text-slate-800 bg-white focus:bg-white" />
       </div>
@@ -122,7 +124,8 @@
 
       <!-- Tallas -->
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'available_sizes' | transloco }}</label>
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'available_sizes' | transloco
+          }}</label>
         <div class="flex flex-wrap gap-2">
           @for (size of sizes; track size) {
           <button type="button" (click)="toggleSize(size)" [class.btn-primary]="selectedSizes().has(size)"
@@ -152,8 +155,9 @@
       </div>
 
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'upload_new_images' | transloco }}</label>
-        <input type="file" multiple accept="image/*"
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ 'upload_new_images' | transloco
+          }}</label>
+        <input type="file" multiple accept="image/*" (change)="onFileSelected($event)"
           class="file-input file-input-bordered w-full text-slate-800 bg-white focus:bg-white rounded-xl" />
       </div>
     </div>
