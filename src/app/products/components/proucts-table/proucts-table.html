@@ -81,30 +81,40 @@
     </table>
 </div>
 
-<!-- Paginador Elegante -->
+<!-- Paginador Moderno -->
 @if (totalPages() > 1) {
-<div class="flex justify-center items-center mt-6">
-    <div class="join shadow-sm border border-slate-200 bg-white rounded-2xl p-1">
+<div class="flex flex-col items-center gap-3 mt-6">
+    <div class="flex items-center gap-1.5 bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-2xl p-1.5 shadow-lg shadow-slate-200/50">
         <!-- Botón Anterior -->
-        <button class="join-item btn btn-ghost btn-sm rounded-xl font-bold text-slate-500"
+        <button class="flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-100 active:scale-90 text-slate-600"
             [disabled]="currentPage() === 1" (click)="prevPage()">
-            ❮
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
         </button>
 
         <!-- Páginas -->
         @for (page of pagesArray(); track page) {
-        <button class="join-item btn btn-sm rounded-xl px-4 transition-all duration-200"
-            [class.btn-primary]="currentPage() === page" [class.btn-ghost]="currentPage() !== page"
-            [class.text-slate-500]="currentPage() !== page" (click)="setPage(page)">
+        <button class="flex items-center justify-center w-9 h-9 rounded-xl text-sm font-bold transition-all duration-300 active:scale-90"
+            [class]="currentPage() === page 
+                ? 'bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-md shadow-violet-300/50 scale-105' 
+                : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'"
+            (click)="setPage(page)">
             {{ page }}
         </button>
         }
 
         <!-- Botón Siguiente -->
-        <button class="join-item btn btn-ghost btn-sm rounded-xl font-bold text-slate-500"
+        <button class="flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-100 active:scale-90 text-slate-600"
             [disabled]="currentPage() === totalPages()" (click)="nextPage()">
-            ❯
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
         </button>
     </div>
+
+    <span class="text-xs font-medium text-slate-400 tracking-wide">
+        {{ currentPage() }} / {{ totalPages() }}
+    </span>
 </div>
 }
